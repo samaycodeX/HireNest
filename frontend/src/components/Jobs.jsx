@@ -6,23 +6,42 @@ import { useSelector } from "react-redux";
 import { motion } from "framer-motion";
 
 const Jobs = () => {
-  const { allJobs, searchedQuery } = useSelector((store) => store.job);
-  const [filterJobs, setFilterJobs] = useState(allJobs);
+  const { allJobs, filters } = useSelector((store) => store.job);
+  const [filterJobs, setFilterJobs] = useState([]);
 
   useEffect(() => {
-    if (searchedQuery) {
-      const filtered = allJobs.filter((job) => {
-        return (
-          job.title.toLowerCase().includes(searchedQuery.toLowerCase()) ||
-          job.description.toLowerCase().includes(searchedQuery.toLowerCase()) ||
-          job.location.toLowerCase().includes(searchedQuery.toLowerCase())
-        );
-      });
-      setFilterJobs(filtered);
-    } else {
-      setFilterJobs(allJobs);
+    let filtered = [...allJobs];
+
+    // Location filter
+    if (filters.location) {
+      filtered = filtered.filter((job) =>
+        job.location
+          ?.toLowerCase()
+          .includes(filters.location.toLowerCase())
+      );
     }
-  }, [allJobs, searchedQuery]);
+
+    // Industry filter
+    if (filters.industry) {
+      filtered = filtered.filter((job) =>
+        job.title
+          ?.toLowerCase()
+          .includes(filters.industry.toLowerCase())
+      );
+    }
+
+    // Salary filter
+    if (filters.salary) {
+      const [min, max] = filters.salary.split("-").map(Number);
+
+      filtered = filtered.filter((job) => {
+        const salaryInLPA = job.salary / 100000;
+        return salaryInLPA >= min && salaryInLPA <= max;
+      });
+    }
+
+    setFilterJobs(filtered);
+  }, [allJobs, filters]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-fuchsia-50">
@@ -86,7 +105,7 @@ const Jobs = () => {
                 </p>
               </div>
             ) : (
-              <div className="h-[75vh] overflow-y-auto pr-3">
+              <div className="h-[92vh] overflow-y-auto pr-3">
                 <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8 pb-8">
                   {filterJobs.map((job) => (
                     <motion.div

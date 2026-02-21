@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import {
   APPLICATION_API_END_POINT,
@@ -16,17 +16,19 @@ const JobDescription = () => {
   const { singleJob } = useSelector((store) => store.job);
   const { user } = useSelector((store) => store.auth);
 
-  const isInitiallyApplied =
-    singleJob?.applications?.some(
-      (application) => application.applicant === user?._id
-    ) || false;
-
-  const [isApplied, setIsApplied] = useState(isInitiallyApplied);
+  const [isApplied, setIsApplied] = useState(false);
 
   const { id: jobId } = useParams();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
+  // 🔥 Apply Handler
   const applyJobHandler = async () => {
+    if (!user) {
+      navigate("/login");
+      return;
+    }
+
     try {
       const res = await axios.get(
         `${APPLICATION_API_END_POINT}/apply/${jobId}`,
@@ -40,7 +42,7 @@ const JobDescription = () => {
           setSingleJob({
             ...singleJob,
             applications: [
-              ...singleJob.applications,
+              ...(singleJob?.applications || []),
               { applicant: user?._id },
             ],
           })
@@ -49,10 +51,11 @@ const JobDescription = () => {
         toast.success(res.data.message);
       }
     } catch (error) {
-      toast.error(error.response?.data?.message);
+      toast.error(error.response?.data?.message || "Something went wrong");
     }
   };
 
+  // 🔥 Fetch Job
   useEffect(() => {
     const fetchSingleJob = async () => {
       try {
@@ -62,12 +65,15 @@ const JobDescription = () => {
         );
 
         if (res.data.success) {
-          dispatch(setSingleJob(res.data.job));
-          setIsApplied(
-            res.data.job.applications.some(
-              (application) => application.applicant === user?._id
-            )
+          const jobData = res.data.job;
+
+          dispatch(setSingleJob(jobData));
+
+          const applied = jobData?.applications?.some(
+            (application) => application.applicant === user?._id
           );
+
+          setIsApplied(applied || false);
         }
       } catch (error) {
         console.log(error);
@@ -79,7 +85,7 @@ const JobDescription = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-fuchsia-50">
-       <Navbar />
+      <Navbar />
       <div className="max-w-5xl mx-auto px-6 py-6">
 
         {/* HEADER CARD */}
@@ -100,27 +106,28 @@ const JobDescription = () => {
 
               <div className="flex flex-wrap items-center gap-2 mt-4">
                 <Badge className="bg-blue-50 text-blue-700 border border-blue-200">
-                  {singleJob?.position} Positions
+                  {singleJob?.positions} Positions
                 </Badge>
+
                 <Badge className="bg-orange-50 text-orange-600 border border-orange-200">
                   {singleJob?.jobType}
                 </Badge>
+
                 <Badge className="bg-fuchsia-50 text-fuchsia-700 border border-fuchsia-200">
-                  {singleJob?.salary} LPA
+                  ₹ {singleJob?.salary / 100000} LPA
                 </Badge>
               </div>
             </div>
 
             <Button
-              onClick={isApplied ? undefined : applyJobHandler}
+              onClick={!isApplied ? applyJobHandler : undefined}
               disabled={isApplied}
               className={`
                 px-6 h-11 rounded-xl font-medium
                 transition-all duration-300
-                ${
-                  isApplied
-                    ? "bg-gray-400 cursor-not-allowed"
-                    : "bg-gradient-to-r from-fuchsia-500 to-fuchsia-700 hover:shadow-lg hover:shadow-fuchsia-500/30 hover:scale-[1.02]"
+                ${isApplied
+                  ? "bg-gray-400 cursor-not-allowed"
+                  : "bg-gradient-to-r from-fuchsia-500 to-fuchsia-700 hover:shadow-lg hover:shadow-fuchsia-500/30 hover:scale-[1.02]"
                 }
               `}
             >
@@ -147,8 +154,11 @@ const JobDescription = () => {
           <div className="grid md:grid-cols-2 gap-6 text-sm">
             <Info label="Role" value={singleJob?.title} />
             <Info label="Location" value={singleJob?.location} />
-            <Info label="Experience" value={`${singleJob?.experience} yrs`} />
-            <Info label="Salary" value={`${singleJob?.salary} LPA`} />
+            <Info label="Experience" value={singleJob?.experienceLevel} />
+            <Info
+              label="Salary"
+              value={`₹ ${singleJob?.salary / 100000} LPA`}
+            />
             <Info
               label="Total Applicants"
               value={singleJob?.applications?.length}

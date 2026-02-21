@@ -1,6 +1,7 @@
 import { Company } from "../models/company.model.js";
 import getDataUri from "../utils/datauri.js";
 import cloudinary from "../utils/cloudinary.js";
+import { User } from "../models/user.model.js";
 
 export const registerCompany = async (req, res) => {
     try {
@@ -36,15 +37,15 @@ export const getCompany = async (req, res) => {
     try {
         const userId = req.id; // logged in user id
         const companies = await Company.find({ userId });
-        if (!companies) {
+        if (!companies || companies.length === 0) {
             return res.status(404).json({
                 message: "Companies not found.",
                 success: false
             })
-        } 
+        }
         return res.status(200).json({
             companies,
-            success:true
+            success: true
         })
     } catch (error) {
         console.log(error);

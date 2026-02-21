@@ -12,6 +12,8 @@ import { toast } from "sonner";
 
 const Navbar = () => {
   const { user } = useSelector((store) => store.auth);
+  // console.log(user)
+  
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -19,7 +21,7 @@ const Navbar = () => {
     try {
       const res = await axios.get(`${USER_API_END_POINT}/logout`, {
         withCredentials: true,
-      });
+      }); 
       if (res.data.success) {
         dispatch(setUser(null));
         toast.success(res.data.message);
@@ -106,7 +108,7 @@ const Navbar = () => {
               <Avatar className="cursor-pointer scale-110">
                 <AvatarImage
                   className="object-cover"
-                  src={user?.profile?.profilePhoto}
+                  src={user?.profile?.profilePhoto|| "https://www.shutterstock.com/image-vector/circle-line-simple-design-logo-600nw-2174926871.jpg"}
                   alt="user"
                 />
               </Avatar>
@@ -125,13 +127,13 @@ const Navbar = () => {
                   <Avatar>
                     <AvatarImage
                       className="object-cover"
-                      src={user?.profile?.profilePhoto}
+                      src={user?.profile?.profilePhoto || "https://www.shutterstock.com/image-vector/circle-line-simple-design-logo-600nw-2174926871.jpg"}
                       alt="user"
                     />
                   </Avatar>
                   <div>
                     <h4 className="font-medium">{user?.fullname}</h4>
-                    <p className="text-sm text-muted-foreground">
+                    <p className="text-xs text-muted-foreground">
                       {user?.profile?.bio}
                     </p>
                   </div>

@@ -28,7 +28,7 @@ const jobSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    position: {
+    positions: {
         type: Number,
         required: true
     },

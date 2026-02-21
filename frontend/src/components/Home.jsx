@@ -16,7 +16,8 @@ const Home = () => {
     if (user?.role === 'recruiter') {
       navigate("/admin/homeadmin");
     }
-  }, []);
+  }, [user]);
+
   return (
     <div className='bg-gray-50'>
       <Navbar />

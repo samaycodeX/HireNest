@@ -1,26 +1,26 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { Link, useNavigate } from "react-router-dom";
-import { Eye, EyeOff, Loader2 } from "lucide-react";
+import { Eye, EyeOff, Flag, Loader2 } from "lucide-react";
 import axios from "axios";
-import { USER_API_END_POINT as AUTH_API_END_POINT } from "@/utils/constant";
+import { USER_API_END_POINT as AUTH_API_END_POINT, USER_API_END_POINT } from "@/utils/constant";
 import { toast } from "sonner";
+import { FaGoogle } from "react-icons/fa";
 
 export default function Signup() {
     const navigate = useNavigate();
 
     const [showPassword, setShowPassword] = useState(false);
-    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [loading, setLoading] = useState(false);
-
+    const [validPassword, setvalidPassword] = useState(true)
+    const [passwordValidation, setpasswordValidation] = useState({})
     const [input, setInput] = useState({
         fullname: "",
         email: "",
         phoneNumber: "",
-        password: "",
-        confirmPassword: "",
+        password: "", 
         role: "",
         profilePhoto: "",
     });
@@ -32,17 +32,39 @@ export default function Signup() {
     const changeFileHandler = (e) => {
         setInput({ ...input, profilePhoto: e.target.files?.[0] });
     };
+    const validatePassword = (password) => {
+        const minLength = password.length >= 6;
+        const hasUpperCase = /[A-Z]/.test(password);
+        const hasNumber = /[0-9]/.test(password);
+
+        return {
+            minLength,
+            hasUpperCase,
+            hasNumber,
+            isValid: minLength && hasUpperCase && hasNumber
+        };
+    };
+
+
 
     const isFormValid =
         input.fullname &&
         input.email &&
         input.password &&
-        input.confirmPassword &&
-        input.role &&
-        input.password === input.confirmPassword;
+        input.role;
 
     const submitHandler = async (e) => {
         e.preventDefault();
+
+        setpasswordValidation(validatePassword(input.password));
+
+        if (!passwordValidation.isValid) {
+            setvalidPassword(false);
+            return;
+        }
+
+        setvalidPassword(true)
+
         if (!isFormValid) return;
 
         setLoading(true);
@@ -76,6 +98,9 @@ export default function Signup() {
         } finally {
             setLoading(false);
         }
+    };
+    const oauthHandler = (e) => {
+        window.location.href = `${USER_API_END_POINT}/${e}`;
     };
 
     const textGradient =
@@ -112,7 +137,7 @@ export default function Signup() {
             </div>
 
             {/* RIGHT SIDE */}
-            <div className="flex items-center justify-center px-20 w-full lg:w-1/2">
+            <div className="flex items-center justify-center px-20 w-full lg:w-1/2 mt-10">
                 <form onSubmit={submitHandler} className="w-full max-w-sm">
                     <h2 className="text-3xl font-semibold text-gray-900">
                         Create account
@@ -181,44 +206,27 @@ export default function Signup() {
                                     {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                                 </button>
                             </div>
-                        </div>
-
-                        {/* Confirm Password */}
-                        <div>
-                            <Label>Confirm Password <span className="text-red-600">*</span></Label>
-                            <div className="relative">
-                                <Input
-                                    required
-                                    type={showConfirmPassword ? "text" : "password"}
-                                    name="confirmPassword"
-                                    value={input.confirmPassword}
-                                    onChange={changeHandler}
-                                    placeholder="••••••••"
-                                    className={inputClass}
-                                />
-                                <button
-                                    type="button"
-                                    onClick={() =>
-                                        setShowConfirmPassword(!showConfirmPassword)
-                                    }
-                                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500"
-                                >
-                                    {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-                                </button>
-                            </div>
-
-                            {input.confirmPassword && (
-                                <p
-                                    className={`text-xs mt-1 ${input.password === input.confirmPassword
-                                            ? "text-green-600"
-                                            : "text-red-500"
-                                        }`}
-                                >
-                                    {input.password === input.confirmPassword
-                                        ? "Passwords match"
-                                        : "Passwords do not match"}
-                                </p>
+                            {!validPassword && (
+                                <div className="mt-2 text-sm space-y-1">
+                                    {!passwordValidation.minLength && (
+                                        <p className="text-red-500">
+                                            • At least 6 characters
+                                        </p>
+                                    )}
+                                    {!passwordValidation.hasNumber && (
+                                        <p className="text-red-500">
+                                            • Contains a number
+                                        </p>
+                                    )}
+                                    {!passwordValidation.hasUpperCase && (
+                                        <p className="text-red-500">
+                                            • Contains a capital letter
+                                        </p>
+                                    )}
+                                </div>
                             )}
+
+
                         </div>
                     </div>
 
@@ -288,6 +296,46 @@ export default function Signup() {
                             Log in
                         </Link>
                     </p>
+
+                    {/* Divider */}
+                    <div className="my-6 flex items-center gap-4">
+                        <div className="h-px bg-gray-200 w-full"></div>
+                        <span className="text-sm text-gray-400">OR</span>
+                        <div className="h-px bg-gray-200 w-full"></div>
+                    </div>
+
+                    {/* OAuth Buttons */}
+                    <div className="space-y-3 pb-10">
+
+                        <Button
+                            type="button"
+                            onClick={() => oauthHandler("google")}
+                            className="w-full h-11 bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 flex items-center justify-center gap-2 shadow-sm"
+                        >
+
+                            <FaGoogle size={20} />
+                            Continue with Google
+                        </Button>
+
+                        {/* <Button
+                                  type="button"
+                                  // onClick={() => oauthHandler("github")}
+                                  className="w-full h-11 bg-black text-white hover:bg-gray-900 flex items-center justify-center gap-2"
+                                >
+                                  <FaGithub size={18} />
+                                  Continue with GitHub
+                                </Button>
+                    
+                                <Button
+                                  type="button"
+                                  // onClick={() => oauthHandler("facebook")}
+                                  className="w-full h-11 bg-[#1877F2] text-white hover:bg-[#166FE5] flex items-center justify-center gap-2"
+                                >
+                                  <FaFacebook size={18} />
+                                  Continue with Facebook
+                                </Button> */}
+
+                    </div>
                 </form>
             </div>
         </div>

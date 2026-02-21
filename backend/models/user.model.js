@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { OauthAccount } from "./oauthAccount.model.js";
 
 const userSchema = new mongoose.Schema({
     fullname: {
@@ -10,29 +11,38 @@ const userSchema = new mongoose.Schema({
         required: true,
         unique: true
     },
-    phoneNumber: { 
-        type: Number,
+    isValidEmail: {
+        type: Boolean,
+        default: false,
         required: true
     },
-    password:{
-        type:String,
-        required:true,
+    phoneNumber: {
+        type: String,
     },
-    role:{
-        type:String,
-        enum:['student','recruiter'],
-        required:true
+    password: {
+        type: String
     },
-    profile:{
-        bio:{type:String},
-        skills:[{type:String}],
-        resume:{type:String}, // URL to resume file
-        resumeOriginalName:{type:String},
-        company:{type:mongoose.Schema.Types.ObjectId, ref:'Company'}, 
-        profilePhoto:{
-            type:String,
-            default:""
+    role: {
+        type: String,
+        enum: ['student', 'recruiter'],
+    },
+    profile: {
+        bio: { type: String },
+        skills: [{ type: String }],
+        resume: { type: String }, // URL to resume file
+        resumeOriginalName: { type: String },
+        company: { type: mongoose.Schema.Types.ObjectId, ref: 'Company' },
+        profilePhoto: {
+            type: String,
+            default: ""
         }
     },
-},{timestamps:true});
+}, { timestamps: true });
+
+userSchema.pre("findOneAndDelete", async function (next) {
+    const user = await this.model.findOne(this.getFilter());
+    await OauthAccount.deleteMany({ userId: user._id });
+    next();
+});
+
 export const User = mongoose.model('User', userSchema);

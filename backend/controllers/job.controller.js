@@ -3,35 +3,54 @@ import { Job } from "../models/job.model.js";
 // admin post krega job
 export const postJob = async (req, res) => {
     try {
-        const { title, description, requirements, salary, location, jobType, experienceLevel, position, company } = req.body;
+        const {
+            title,
+            description,
+            requirements,
+            salary,
+            location,
+            jobType,
+            experienceLevel,
+            positions,
+            company,
+        } = req.body;
 
-        const userId = req.id;
-
-        if (!title || !description || !requirements || !salary || !location || !jobType || !experienceLevel || !position || !company) {
+        if (
+            !title ||
+            !description ||
+            !requirements ||
+            !salary ||
+            !location ||
+            !jobType ||
+            !experienceLevel ||
+            !positions ||
+            !company
+        ) {
             return res.status(400).json({
-                message: "Somethin is missing.",
-                success: false
-            })
-        };
-        const requirementsArray = Array.isArray(requirements)
-            ? requirements
-            : requirements.split(",");
+                message: "Something is missing",
+                success: false,
+            });
+        }
+
         const job = await Job.create({
             title,
             description,
-            requirements: requirementsArray,
+            requirements: Array.isArray(requirements)
+                ? requirements
+                : requirements.split(",").map(r => r.trim()),
             salary: Number(salary),
             location,
             jobType,
             experienceLevel,
             positions: Number(positions),
             company,
-            createdBy: req.id,
+            created_by: req.id,
         });
+
         return res.status(201).json({
-            message: "New job created successfully.",
+            message: "New job created successfully",
+            success: true,
             job,
-            success: true
         });
     } catch (error) {
         console.log(error);
@@ -40,7 +59,8 @@ export const postJob = async (req, res) => {
             success: false,
         });
     }
-}
+};
+
 // student k liye
 export const getAllJobs = async (req, res) => {
     try {
@@ -68,6 +88,8 @@ export const getAllJobs = async (req, res) => {
         console.log(error);
     }
 }
+
+
 // student
 export const getJobById = async (req, res) => {
     try {

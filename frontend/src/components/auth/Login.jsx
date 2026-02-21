@@ -9,6 +9,7 @@ import { toast } from "sonner";
 import { USER_API_END_POINT } from "@/utils/constant";
 import { useDispatch, useSelector } from "react-redux";
 import { setLoading, setUser } from "@/redux/authSlice";
+import { FaFacebook, FaGithub, FaGoogle } from "react-icons/fa";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -51,9 +52,21 @@ const Login = () => {
     }
   };
 
+  const oauthHandler = (e) => {
+    window.location.href = `${USER_API_END_POINT}/${e}`;
+  };
+
+
   useEffect(() => {
-    if (user) navigate("/");
-  }, []);
+    if (user) {
+      if (user.role === "recruiter") {
+        navigate("/admin/homeadmin");
+      } else {
+        navigate("/");
+      }
+    }
+  }, [user]);
+
 
   const textGradient =
     "bg-gradient-to-r from-fuchsia-200 to-white bg-clip-text text-transparent";
@@ -112,11 +125,20 @@ const Login = () => {
                   {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
               </div>
+              <p className="text-sm text-gray-600 mt-1">
+
+                <Link
+                  to="/reset-password"
+                  className="font-medium hover:underline"
+                >
+                  Forgot Password?
+                </Link>
+              </p>
             </div>
           </div>
 
           {/* Role */}
-          <div className="flex gap-6 mt-6">
+          <div className="flex gap-6 mt-2">
             <Label className="flex items-center gap-2 cursor-pointer">
               <Input
                 type="radio"
@@ -170,6 +192,47 @@ const Login = () => {
               Sign up
             </Link>
           </p>
+
+          {/* Divider */}
+          <div className="my-6 flex items-center gap-4">
+            <div className="h-px bg-gray-200 w-full"></div>
+            <span className="text-sm text-gray-400">OR</span>
+            <div className="h-px bg-gray-200 w-full"></div>
+          </div>
+
+          {/* OAuth Buttons */}
+          <div className="space-y-3">
+
+            <Button
+              type="button"
+              onClick={() => oauthHandler("google")}
+              className="w-full h-11 bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 flex items-center justify-center gap-2 shadow-sm"
+            >
+
+              <FaGoogle size={20} />
+              Continue with Google
+            </Button>
+
+            {/* <Button
+              type="button"
+              // onClick={() => oauthHandler("github")}
+              className="w-full h-11 bg-black text-white hover:bg-gray-900 flex items-center justify-center gap-2"
+            >
+              <FaGithub size={18} />
+              Continue with GitHub
+            </Button>
+
+            <Button
+              type="button"
+              // onClick={() => oauthHandler("facebook")}
+              className="w-full h-11 bg-[#1877F2] text-white hover:bg-[#166FE5] flex items-center justify-center gap-2"
+            >
+              <FaFacebook size={18} />
+              Continue with Facebook
+            </Button> */}
+
+          </div>
+
         </form>
       </div>
 

@@ -10,8 +10,10 @@ import { toast } from "sonner";
 import { useDispatch } from "react-redux";
 import { setSingleCompany } from "@/redux/companySlice";
 import { Building2 } from "lucide-react";
+import useGetCurrentUser from "@/hooks/useGetCurrentUser";
 
 const CompanyCreate = () => {
+  // useGetCurrentUser()
   const navigate = useNavigate();
   const [companyName, setCompanyName] = useState();
   const dispatch = useDispatch();
@@ -22,13 +24,10 @@ const CompanyCreate = () => {
         `${COMPANY_API_END_POINT}/register`,
         { companyName },
         {
-          headers: {
-            "Content-Type": "application/json",
-          },
           withCredentials: true,
         }
       );
-
+ 
       if (res?.data?.success) {
         dispatch(setSingleCompany(res.data.company));
         toast.success(res.data.message);

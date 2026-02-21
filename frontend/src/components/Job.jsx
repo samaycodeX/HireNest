@@ -16,136 +16,69 @@ const Job = ({ job }) => {
     };
 
     return (
-        <div
-            className="
-        group relative
-        rounded-2xl
-        bg-white
-        border border-gray-200
-        p-5
-        shadow-md
-        transition-all duration-300 ease-out
-        hover:shadow-xl hover:-translate-y-1
-      "
-        >
+        <div className="bg-white border rounded-xl shadow-sm p-5 w-full max-w-sm h-[340px] flex flex-col justify-between">
+
             {/* TOP */}
-            <div className="flex items-center justify-between">
-                <p className="text-xs text-gray-500">
-                    {daysAgoFunction(job?.createdAt) === 0
-                        ? "Today"
-                        : `${daysAgoFunction(job?.createdAt)} days ago`}
-                </p>
+            <div>
+                <div className="flex justify-between items-center text-xs text-gray-500">
+                    <p>
+                        {daysAgoFunction(job?.createdAt) === 0
+                            ? "Today"
+                            : `${daysAgoFunction(job?.createdAt)} days ago`}
+                    </p>
 
-                <Button
-                    variant="ghost"
-                    size="icon"
-                    className="
-            rounded-full
-            text-gray-500
-            hover:text-fuchsia-600
-            hover:bg-fuchsia-50
-          "
-                >
-                    <Bookmark className="h-5 w-5" />
-                </Button>
-            </div>
+                    <Bookmark className="h-4 w-4 cursor-pointer text-gray-400 hover:text-gray-700" />
+                </div>
 
-            {/* COMPANY */}
-            <div className="flex items-center gap-3 mt-4">
-                <div
-                    className="
-            p-2 rounded-xl
-            border border-gray-200
-            bg-gray-50
-          "
-                >
-                    <Avatar className="h-10 w-10">
+                {/* COMPANY */}
+                <div className="flex items-center gap-3 mt-4">
+                    <Avatar className="h-10 w-10 border">
                         <AvatarImage src={job?.company?.logo} />
                     </Avatar>
+
+                    <div>
+                        <h3 className="text-sm font-semibold">
+                            {job?.company?.name}
+                        </h3>
+                        <p className="text-xs text-gray-500">
+                            {job?.location}
+                        </p>
+                    </div>
                 </div>
 
-                <div>
-                    <h3 className="font-semibold text-gray-900">
-                        {job?.company?.name}
-                    </h3>
-                    <p className="text-xs text-gray-500">India</p>
-                </div>
-            </div>
-
-            {/* TITLE & DESC */}
-            <div className="mt-4">
-                <h2
-                    className="
-            font-bold text-lg text-gray-900
-            group-hover:text-fuchsia-600
-            transition
-          "
-                >
+                {/* TITLE */}
+                <h2 className="mt-4 font-bold text-base line-clamp-1">
                     {job?.title}
                 </h2>
 
-                <p className="text-sm text-gray-600 mt-1 line-clamp-2">
+                {/* DESCRIPTION */}
+                <p className="text-sm text-gray-600 mt-2 line-clamp-2">
                     {job?.description}
                 </p>
+
+                {/* BADGES */}
+                <div className="flex flex-wrap gap-2 mt-4">
+                    <Badge variant="secondary">
+                        {job?.positions} Positions
+                    </Badge>
+
+                    <Badge variant="secondary">
+                        {job?.jobType}
+                    </Badge>
+
+                    <Badge variant="secondary">
+                        ₹ {job?.salary / 100000} LPA
+                    </Badge>
+                </div>
             </div>
 
-            {/* TAGS */}
-            <div className="flex flex-wrap gap-2 mt-4">
-                <Badge variant="outline" className="text-blue-700 border-blue-200">
-                    {job?.position} Positions
-                </Badge>
-
-                <Badge variant="outline" className="text-orange-600 border-orange-200">
-                    {job?.jobType}
-                </Badge>
-
-                <Badge variant="outline" className="text-fuchsia-700 border-fuchsia-200">
-                    {job?.salary}LPA
-                </Badge>
-            </div>
-
-            {/* ACTIONS */}
-            <div className="flex gap-3 mt-6">
-                <Button
-                    variant="outline"
-                    className="
-            flex-1
-            border-gray-300
-            hover:border-fuchsia-400
-            hover:text-fuchsia-600
-          "
-                    onClick={() => navigate(`/description/${job?._id}`)}
-                >
-                    Details
-                </Button>
-
-                <Button
-                    className="
-            flex-1
-            bg-gradient-to-r from-fuchsia-500 to-fuchsia-700
-            text-white
-            shadow-md shadow-fuchsia-500/30
-            hover:shadow-lg hover:shadow-fuchsia-500/40
-            transition-all
-          "
-                >
-                    Save For Later
-                </Button>
-            </div>
-
-            {/* GLOW */}
-            <div
-                className="
-          pointer-events-none
-          absolute -inset-0.5
-          rounded-2xl
-          bg-gradient-to-r from-fuchsia-400 to-purple-500
-          opacity-0
-          blur
-          group-hover:opacity-20
-          transition
-        "
-            />
+            {/* ACTION BUTTON */}
+            <Button
+                onClick={() => navigate(`/description/${job?._id}`)}
+                className="w-full mt-4"
+            >
+                View Details
+            </Button>
         </div>
     );
 };
