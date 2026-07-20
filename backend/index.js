@@ -11,13 +11,14 @@ import applicationRoute from "./routes/application.route.js";
 dotenv.config({});
  
 const app = express();
+const frontendUrl = process.env.FRONTEND_URL || "https://hirenest-1.onrender.com";
 
 // middleware
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 app.use(cookieParser());
 const corsOptions = {
-    origin:'https://hirenest-1.onrender.com',
+    origin: frontendUrl,
     credentials:true
 }
 

@@ -17,6 +17,15 @@ import { sendEmail } from "../lib/resend.mail.js";
 import validator from "validator";
 import { ResetPasswordToken } from "../models/resetPasswordToken.model.js";
 
+const frontendUrl = process.env.FRONTEND_URL || "https://hirenest-1.onrender.com";
+const crossSiteCookieOptions = {
+    httpOnly: true,
+    secure: true,
+    sameSite: "none",
+    path: "/",
+    maxAge: 24 * 60 * 60 * 1000,
+};
+
 export const register = async (req, res) => {
     try {
         const { fullname, email, phoneNumber, password, role } = req.body;
@@ -125,13 +134,7 @@ export const login = async (req, res) => {
 
         return res
             .status(200)
-            .cookie("token", token, {
-                httpOnly: true,
-                secure: false,
-                sameSite: "lax",
-                path: "/",
-                maxAge: 24 * 60 * 60 * 1000
-            })
+            .cookie("token", token, crossSiteCookieOptions)
             .json({
                 message: `Welcome back ${user.fullname}`,
                 user,
@@ -144,7 +147,10 @@ export const login = async (req, res) => {
 }
 export const logout = async (req, res) => {
     try {
-        return res.status(200).cookie("token", "", { maxAge: 0 }).json({
+        return res.status(200).cookie("token", "", {
+            ...crossSiteCookieOptions,
+            maxAge: 0,
+        }).json({
             message: "Logged out successfully.",
             success: true
         })
@@ -386,14 +392,14 @@ export const getGoogleLoginPage = async (req, res) => {
 
     res.cookie("google_oauth_state", state, {
         httpOnly: true,
-        secure: false, // true in production
+        secure: true,
         maxAge: 10 * 60 * 1000,
         sameSite: "lax",
     });
 
     res.cookie("google_code_verifier", codeVerifier, {
         httpOnly: true,
-        secure: false,
+        secure: true,
         maxAge: 10 * 60 * 1000,
         sameSite: "lax",
     });
@@ -410,7 +416,7 @@ export const getGoogleLoginCallback = async (req, res) => {
         const codeVerifier = req.cookies.google_code_verifier;
 
         if (!code || !state || !storedState || !codeVerifier || state !== storedState) {
-            return res.redirect("https://hirenest-1.onrender.com/login");
+            return res.redirect(`${frontendUrl}/login`);
         }
 
         const tokens = await google.validateAuthorizationCode(code, codeVerifier);
@@ -467,28 +473,22 @@ export const getGoogleLoginCallback = async (req, res) => {
             { expiresIn: "1d" }
         );
 
-        res.cookie("token", token, {
-            httpOnly: true,
-            secure: false,
-            sameSite: "lax",
-            path: "/",
-            maxAge: 24 * 60 * 60 * 1000
-        });
+        res.cookie("token", token, crossSiteCookieOptions);
 
         if (!user.role || !user.phoneNumber || !user.password) {
-            return res.redirect("https://hirenest-1.onrender.com/completeProfile");
+            return res.redirect(`${frontendUrl}/completeProfile`);
         }
 
         if (user.role === "recruiter") {
-            return res.redirect("https://hirenest-1.onrender.com/admin/homeadmin");
+            return res.redirect(`${frontendUrl}/admin/homeadmin`);
         }
 
 
-        return res.redirect("https://hirenest-1.onrender.com/");
+        return res.redirect(`${frontendUrl}/`);
 
     } catch (error) {
         console.log(error);
-        return res.redirect("https://hirenest-1.onrender.com/login");
+        return res.redirect(`${frontendUrl}/login`);
     }
 };
 
