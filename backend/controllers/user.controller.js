@@ -410,7 +410,7 @@ export const getGoogleLoginCallback = async (req, res) => {
         const codeVerifier = req.cookies.google_code_verifier;
 
         if (!code || !state || !storedState || !codeVerifier || state !== storedState) {
-            return res.redirect("http://localhost:5173/login");
+            return res.redirect("https://hirenest-1.onrender.com/login");
         }
 
         const tokens = await google.validateAuthorizationCode(code, codeVerifier);
@@ -476,19 +476,19 @@ export const getGoogleLoginCallback = async (req, res) => {
         });
 
         if (!user.role || !user.phoneNumber || !user.password) {
-            return res.redirect("http://localhost:5173/completeProfile");
+            return res.redirect("https://hirenest-1.onrender.com/completeProfile");
         }
 
         if (user.role === "recruiter") {
-            return res.redirect("http://localhost:5173/admin/homeadmin");
+            return res.redirect("https://hirenest-1.onrender.com/admin/homeadmin");
         }
 
 
-        return res.redirect("http://localhost:5173/");
+        return res.redirect("https://hirenest-1.onrender.com/");
 
     } catch (error) {
         console.log(error);
-        return res.redirect("http://localhost:5173/login");
+        return res.redirect("https://hirenest-1.onrender.com/login");
     }
 };
 
