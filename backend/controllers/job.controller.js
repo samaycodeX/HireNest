@@ -64,7 +64,11 @@ export const postJob = async (req, res) => {
 // student k liye
 export const getAllJobs = async (req, res) => {
     try {
-        const keyword = req.query.keyword || "";
+        // Escape the user's search text before using it in a MongoDB regex.
+        // This keeps punctuation such as '[' from creating an invalid regex.
+        const keyword = (req.query.keyword || "")
+            .trim()
+            .replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
         const query = {
             $or: [
                 { title: { $regex: keyword, $options: "i" } },
@@ -86,6 +90,10 @@ export const getAllJobs = async (req, res) => {
         })
     } catch (error) {
         console.log(error);
+        return res.status(500).json({
+            message: "Unable to search jobs.",
+            success: false,
+        });
     }
 }
 
