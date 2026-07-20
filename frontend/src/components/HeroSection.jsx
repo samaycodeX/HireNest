@@ -18,12 +18,12 @@ export default function Hero() {
     };
 
     return (
-        <section className="py-10 flex items-center justify-center px-10 overflow-hidden">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center max-w-7xl">
+        <section className="flex items-center justify-center overflow-hidden px-4 py-10 sm:px-6 lg:px-10">
+            <div className="grid max-w-7xl grid-cols-1 items-center gap-10 lg:grid-cols-2">
 
                 {/* LEFT CONTENT */}
-                <div className="animate-fade-up">
-                    <h1 className="text-7xl font-extrabold leading-tight text-gray-900">
+                <div className="animate-fade-up text-center lg:text-left">
+                    <h1 className="text-4xl font-extrabold leading-tight text-gray-900 sm:text-5xl lg:text-7xl">
                         Build Your{" "}
                         <span className="bg-gradient-to-r from-fuchsia-400 to-fuchsia-600 bg-clip-text text-transparent">
                             Future
@@ -31,14 +31,14 @@ export default function Hero() {
                         Faster
                     </h1>
 
-                    <p className="mt-6 text-gray-600 max-w-md text-center">
+                    <p className="mx-auto mt-6 max-w-md text-gray-600 lg:mx-0">
                         Discover jobs, build resumes, and connect with top companies — all in one place.
                     </p>
 
 
 
                     {/* SEARCH BAR */}
-                    <div className="mt-8 flex w-full max-w-md shadow-lg border border-gray-200 pl-4 rounded-full items-center gap-3 bg-white">
+                    <div className="mx-auto mt-8 flex w-full max-w-md items-center gap-3 rounded-full border border-gray-200 bg-white pl-4 shadow-lg lg:mx-0">
                         <input
                             type="text"
                             placeholder="Find your dream jobs"
@@ -56,7 +56,7 @@ export default function Hero() {
                     </div>
                 </div>
 
-                <Avatar className="w-full h-full -m-5">
+                <Avatar className="mx-auto h-auto w-full max-w-md lg:max-w-none">
                     <AvatarImage
                         src={heroProfile}
                         alt="profile"

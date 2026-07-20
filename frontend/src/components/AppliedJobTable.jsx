@@ -15,8 +15,8 @@ const AppliedJobTable = () => {
   const { allAppliedJobs } = useSelector((store) => store.job);
 
   return (
-    <div className="overflow-hidden rounded-2xl">
-      <Table>
+    <div className="overflow-x-auto rounded-2xl">
+      <Table className="min-w-[640px]">
         <TableCaption className="text-sm text-gray-500 py-4">
           A list of your applied jobs
         </TableCaption>

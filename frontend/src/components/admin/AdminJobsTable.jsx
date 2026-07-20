@@ -41,8 +41,8 @@ const AdminJobsTable = () => {
     }, [allAdminJobs, searchJobByText]);
 
     return (
-        <div className="overflow-hidden rounded-2xl">
-            <Table>
+        <div className="overflow-x-auto rounded-2xl">
+            <Table className="min-w-[620px]">
                 {/* CAPTION */}
                 <TableHeader>
                     <TableRow className="bg-gray-50">

@@ -11,9 +11,9 @@ const HomeAdmin = () => {
         <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-fuchsia-50">
             <Navbar />
 
-            <section className="flex items-center justify-center px-6 py-20">
-                <div className="max-w-4xl w-full text-center animate-fade-up py-20">
-                    <h1 className="text-5xl md:text-6xl font-extrabold leading-tight text-gray-900">
+            <section className="flex items-center justify-center px-4 py-12 sm:px-6 sm:py-20">
+                <div className="w-full max-w-4xl animate-fade-up py-10 text-center sm:py-20">
+                    <h1 className="text-4xl font-extrabold leading-tight text-gray-900 sm:text-5xl md:text-6xl">
                         Welcome,{" "}
                         <span className="bg-gradient-to-r from-fuchsia-500 to-fuchsia-700 bg-clip-text text-transparent">
                             {user?.fullname}

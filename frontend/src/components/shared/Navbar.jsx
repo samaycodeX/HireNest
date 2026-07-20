@@ -1,9 +1,9 @@
-import React from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Avatar, AvatarImage } from "../ui/avatar";
 import { Button } from "../ui/button";
-import { LogOut, User2 } from "lucide-react";
+import { LogOut, Menu, User2, X } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { USER_API_END_POINT } from "@/utils/constant";
@@ -16,6 +16,7 @@ const Navbar = () => {
   
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const logoutHandler = async () => {
     try {
@@ -41,30 +42,40 @@ const Navbar = () => {
     "hover:bg-clip-text hover:text-transparent";
 
   return (
-    <nav className="flex items-center justify-between px-20 py-4">
+    <nav className="relative z-30 flex items-center justify-between px-4 py-4 sm:px-6 lg:px-20">
       {/* Logo */}
       <h1 className="text-2xl font-bold text-gray-900">
         Hire
         <span className={`text-3xl font-bold ${textGradient}`}>Nest.</span>
       </h1>
 
-      <div className="flex items-center gap-10">
+      <Button
+        variant="ghost"
+        size="icon"
+        className="md:hidden"
+        onClick={() => setIsMenuOpen((open) => !open)}
+        aria-label="Toggle navigation menu"
+      >
+        {isMenuOpen ? <X /> : <Menu />}
+      </Button>
+
+      <div className={`${isMenuOpen ? "flex" : "hidden"} absolute left-0 right-0 top-full flex-col gap-5 border-y border-gray-100 bg-white px-4 py-5 shadow-lg md:static md:flex md:flex-row md:items-center md:gap-10 md:border-0 md:bg-transparent md:p-0 md:shadow-none`}>
         {/* Nav links */}
-        <ul className="flex gap-12 font-medium">
+        <ul className="flex flex-col gap-4 font-medium md:flex-row md:gap-12">
           {user && user.role === "recruiter" ? (
             <>
               <li>
-                <Link to="/admin/homeadmin" className={navLink}>
+                <Link to="/admin/homeadmin" className={navLink} onClick={() => setIsMenuOpen(false)}>
                   Home
                 </Link>
               </li>
               <li>
-                <Link to="/admin/companies" className={navLink}>
+                <Link to="/admin/companies" className={navLink} onClick={() => setIsMenuOpen(false)}>
                   Companies
                 </Link>
               </li>
               <li>
-                <Link to="/admin/jobs" className={navLink}>
+                <Link to="/admin/jobs" className={navLink} onClick={() => setIsMenuOpen(false)}>
                   Jobs
                 </Link>
               </li>
@@ -72,17 +83,17 @@ const Navbar = () => {
           ) : (
             <>
               <li>
-                <Link to="/" className={navLink}>
+                <Link to="/" className={navLink} onClick={() => setIsMenuOpen(false)}>
                   Home
                 </Link>
               </li>
               <li>
-                <Link to="/jobs" className={navLink}>
+                <Link to="/jobs" className={navLink} onClick={() => setIsMenuOpen(false)}>
                   Jobs
                 </Link>
               </li>
               <li>
-                <Link to="/browse" className={navLink}>
+                <Link to="/browse" className={navLink} onClick={() => setIsMenuOpen(false)}>
                   Browse
                 </Link>
               </li>
@@ -92,11 +103,11 @@ const Navbar = () => {
 
         {/* Right section */}
         {!user ? (
-          <div className="flex gap-4">
-            <Link to="/login">
+          <div className="flex gap-3">
+            <Link to="/login" onClick={() => setIsMenuOpen(false)}>
               <Button variant="outline">Login</Button>
             </Link>
-            <Link to="/signup">
+            <Link to="/signup" onClick={() => setIsMenuOpen(false)}>
               <Button className="bg-gradient-to-r from-fuchsia-400 to-fuchsia-600 text-white">
                 Sign Up
               </Button>

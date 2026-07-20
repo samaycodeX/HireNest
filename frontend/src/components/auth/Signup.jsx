@@ -137,7 +137,7 @@ export default function Signup() {
             </div>
 
             {/* RIGHT SIDE */}
-            <div className="flex items-center justify-center px-20 w-full lg:w-1/2 mt-10">
+            <div className="mt-6 flex w-full items-center justify-center px-4 pb-8 sm:px-8 lg:mt-10 lg:w-1/2 lg:px-20">
                 <form onSubmit={submitHandler} className="w-full max-w-sm">
                     <h2 className="text-3xl font-semibold text-gray-900">
                         Create account

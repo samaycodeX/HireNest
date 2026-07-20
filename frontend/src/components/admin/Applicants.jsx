@@ -31,7 +31,7 @@ const Applicants = () => {
         <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-fuchsia-50">
             <Navbar />
 
-            <div className="max-w-7xl mx-auto px-6 lg:px-10 py-10">
+            <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-10 lg:py-10">
                 {/* HEADER */}
                 <div className="mb-8">
                     <h1 className="text-3xl font-extrabold text-gray-900">
@@ -53,7 +53,7 @@ const Applicants = () => {
             backdrop-blur-xl
             border border-gray-200
             shadow-xl shadow-fuchsia-200/40
-            p-6
+            p-4 sm:p-6
           "
                 >
                     <ApplicantsTable />

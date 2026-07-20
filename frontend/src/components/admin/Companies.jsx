@@ -23,7 +23,7 @@ const Companies = () => {
         <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-fuchsia-50">
             <Navbar />
 
-            <div className="max-w-7xl mx-auto px-6 lg:px-10 py-10">
+            <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-10 lg:py-10">
                 {/* HEADER */}
                 <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 mb-8">
                     <div>
@@ -39,9 +39,9 @@ const Companies = () => {
                     </div>
 
                     {/* ACTIONS */}
-                    <div className="flex items-center gap-4">
+                    <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:items-center sm:gap-4">
                         {/* SEARCH */}
-                        <div className="relative">
+                        <div className="relative w-full sm:w-auto">
                             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
                             <Input
                                 placeholder="Search company..."
@@ -49,7 +49,7 @@ const Companies = () => {
                                 className="
                   pl-9
                   h-10
-                  w-64
+                  w-full sm:w-64
                   border-gray-200
                   focus-visible:ring-fuchsia-500
                 "
@@ -60,7 +60,7 @@ const Companies = () => {
                         <Button
                             onClick={() => navigate("/admin/companies/create")}
                             className="
-                h-10
+                h-10 w-full sm:w-auto
                 px-5
                 bg-gradient-to-r from-fuchsia-500 to-fuchsia-700
                 text-white
@@ -84,7 +84,7 @@ const Companies = () => {
             backdrop-blur-xl
             border border-gray-200
             shadow-xl shadow-fuchsia-200/40
-            p-6
+            p-4 sm:p-6
           "
                 >
                     <CompaniesTable />

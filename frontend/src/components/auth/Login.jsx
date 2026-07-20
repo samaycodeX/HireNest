@@ -77,7 +77,7 @@ const Login = () => {
   return (
     <div className="flex justify-between bg-gray-50 min-h-screen">
       {/* LEFT — Form */}
-      <div className="flex items-center justify-center px-20 w-1/2 pt-10">
+      <div className="flex w-full items-center justify-center px-4 pb-8 pt-8 sm:px-8 lg:w-1/2 lg:px-20 lg:pt-10">
         <form onSubmit={submitHandler} className="w-full max-w-sm">
           <h2 className="text-3xl font-semibold text-gray-900">
             Login

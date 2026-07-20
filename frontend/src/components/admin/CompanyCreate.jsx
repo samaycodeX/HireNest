@@ -43,7 +43,7 @@ const CompanyCreate = () => {
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-fuchsia-50">
       <Navbar />
 
-      <div className="max-w-4xl mx-auto px-6 py-16">
+      <div className="mx-auto max-w-4xl px-4 py-8 sm:px-6 sm:py-12 lg:py-16">
         {/* CARD */}
         <div
           className="
@@ -51,7 +51,7 @@ const CompanyCreate = () => {
             rounded-2xl
             border border-gray-200
             shadow-xl shadow-fuchsia-200/40
-            p-10
+            p-5 sm:p-8 lg:p-10
           "
         >
           {/* HEADER */}

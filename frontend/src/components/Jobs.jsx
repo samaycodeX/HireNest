@@ -47,7 +47,7 @@ const Jobs = () => {
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-fuchsia-50">
       <Navbar />
 
-      <div className="max-w-7xl mx-auto px-6 lg:px-10 pt-10 pb-20">
+      <div className="mx-auto max-w-7xl px-4 pb-12 pt-8 sm:px-6 lg:px-10 lg:pb-20 lg:pt-10">
         {/* HEADER */}
         <div className="mb-10">
           <h1 className="text-3xl lg:text-4xl font-extrabold text-gray-900">
@@ -61,7 +61,7 @@ const Jobs = () => {
           </p>
         </div>
 
-        <div className="flex gap-10">
+        <div className="flex gap-6 lg:gap-10">
           {/* FILTER */}
           <aside className="hidden lg:block w-[280px] shrink-0">
             <div
@@ -83,6 +83,9 @@ const Jobs = () => {
 
           {/* JOB LIST */}
           <main className="flex-1">
+            <div className="mb-6 lg:hidden">
+              <FilterCard />
+            </div>
             {filterJobs.length <= 0 ? (
               <div className="h-[60vh] flex flex-col items-center justify-center text-center">
                 <div
@@ -105,7 +108,7 @@ const Jobs = () => {
                 </p>
               </div>
             ) : (
-              <div className="h-[92vh] overflow-y-auto pr-3">
+              <div className="lg:h-[92vh] lg:overflow-y-auto lg:pr-3">
                 <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8 pb-8">
                   {filterJobs.map((job) => (
                     <motion.div

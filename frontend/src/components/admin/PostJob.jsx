@@ -77,10 +77,10 @@ const PostJob = () => {
         <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-fuchsia-50">
             <Navbar />
 
-            <div className="max-w-5xl mx-auto px-6 py-12">
+            <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6 sm:py-12">
                 <form
                     onSubmit={submitHandler}
-                    className="bg-white rounded-2xl border border-gray-200 shadow-xl shadow-fuchsia-200/40 p-10"
+                    className="rounded-2xl border border-gray-200 bg-white p-5 shadow-xl shadow-fuchsia-200/40 sm:p-8 lg:p-10"
                 >
                     {/* HEADER */}
                     <div className="mb-8">

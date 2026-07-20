@@ -23,10 +23,10 @@ const Profile = () => {
       <Navbar />
 
       {/* PROFILE CARD */}
-      <div className="max-w-4xl mx-auto bg-white border border-gray-200 rounded-2xl my-5 p-8">
-        <div className="flex justify-between">
+      <div className="mx-4 my-5 max-w-4xl rounded-2xl border border-gray-200 bg-white p-5 sm:mx-6 sm:p-8 lg:mx-auto">
+        <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
           <div className="flex items-center gap-4">
-            <Avatar className="h-24 w-24">
+            <Avatar className="h-16 w-16 shrink-0 sm:h-24 sm:w-24">
               <AvatarImage
                 className="object-cover"
                 src={
@@ -56,7 +56,7 @@ const Profile = () => {
 
         {/* CONTACT */}
         <div className="my-5">
-          <div className="flex items-center gap-3 my-2">
+          <div className="my-2 flex flex-wrap items-center gap-3">
             <Mail />
             <div>
               {user?.email}
@@ -80,7 +80,7 @@ const Profile = () => {
               </Link>
             }
           </div>
-          <div className="flex items-center gap-3 my-2">
+          <div className="my-2 flex flex-wrap items-center gap-3">
             <Contact />
             <span>{user?.phoneNumber}</span>
           </div>
@@ -119,7 +119,7 @@ const Profile = () => {
       </div>
 
       {/* APPLIED JOBS */}
-      <div className="max-w-4xl mx-auto bg-white rounded-2xl">
+      <div className="mx-4 max-w-4xl overflow-hidden rounded-2xl bg-white sm:mx-6 lg:mx-auto">
         <h1 className="font-bold text-lg text-center pt-2 my-5">Applied Jobs</h1>
         <AppliedJobTable />
       </div>

@@ -90,7 +90,7 @@ const CompleteProfile = () => {
 
     return (
         <div className="flex bg-gray-50 min-h-screen">
-            <div className="flex items-center justify-center px-20 w-full">
+            <div className="flex w-full items-center justify-center px-4 py-8 sm:px-8 lg:px-20">
                 <form onSubmit={submitHandler} className="w-full max-w-sm">
                     <h2 className="text-3xl font-semibold text-gray-900">
                         Complete Profile After Google Setup

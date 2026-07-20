@@ -86,7 +86,7 @@ const JobDescription = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-fuchsia-50">
       <Navbar />
-      <div className="max-w-5xl mx-auto px-6 py-6">
+      <div className="mx-auto max-w-5xl px-4 py-6 sm:px-6 sm:py-8">
 
         {/* HEADER CARD */}
         <div
@@ -95,7 +95,7 @@ const JobDescription = () => {
             border border-gray-200
             rounded-2xl 
             shadow-xl shadow-fuchsia-100/40
-            p-8
+            p-5 sm:p-8
           "
         >
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
@@ -123,7 +123,7 @@ const JobDescription = () => {
               onClick={!isApplied ? applyJobHandler : undefined}
               disabled={isApplied}
               className={`
-                px-6 h-11 rounded-xl font-medium
+                h-11 w-full px-6 font-medium md:w-auto rounded-xl
                 transition-all duration-300
                 ${isApplied
                   ? "bg-gray-400 cursor-not-allowed"
@@ -144,7 +144,7 @@ const JobDescription = () => {
             rounded-2xl
             border border-gray-200
             shadow-md
-            p-8
+            p-5 sm:p-8
           "
         >
           <h2 className="text-lg font-bold text-gray-900 mb-6 border-b pb-4">
